@@ -118,7 +118,9 @@ class WalletController extends Controller
                         'balance'  => 2000.0
                     ]);
                }
+           
            return response()->json($responseCreateAgreement);
+
         }else{
             //"statusCode":"2050","statusMessage":"Agreement already exists between payer and merchant"
             return response()->json([

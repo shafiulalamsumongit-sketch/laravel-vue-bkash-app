@@ -27,7 +27,7 @@ php artisan serve<br />
 
 
 E.BKASH configuration in Env File <br />
->> BKASH_CALLBAK_URL = http://127.0.0.1:8000/execute-agreement  <br />
+BKASH_CALLBAK_URL = http://127.0.0.1:8000/execute-agreement  <br />
 
 F. Git Url :
 https://github.com/shafiulalamsumongit-sketch/laravel-vue-bkash-app.git<br />
