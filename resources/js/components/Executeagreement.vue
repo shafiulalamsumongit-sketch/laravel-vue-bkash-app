@@ -66,7 +66,7 @@ export default {
           this.message = 'Process canceled. Please try again later.';  
         }
         else{
-         // this.fetchApiData(paymentID);
+          this.fetchApiData(paymentID);
         }
 
      
