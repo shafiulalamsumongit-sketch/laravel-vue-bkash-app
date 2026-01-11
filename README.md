@@ -17,13 +17,13 @@ B. Remaining:<br />
 4. Wallet transaction histories<br />
 
 C. Setup Instructions<br />
->> composer install<br />
->> npm install<br />
->> php artisan migrate<br />
+composer install<br />
+npm install<br />
+php artisan migrate<br />
 
 D. Project Run <br />
->> npm run dev<br />
->> php artisan serve<br />
+npm run dev<br />
+php artisan serve<br />
 
 
 E.BKASH configuration in Env File <br />
