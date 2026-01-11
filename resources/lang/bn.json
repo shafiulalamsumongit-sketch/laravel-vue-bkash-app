@@ -5,5 +5,11 @@
   "Logout": "লগআউট",
   "Profile": "প্রোফাইল",
   "MyApp": "অ্যাপ",
+  "Name": "নাম",
+  "Email": "ইমেল",
+  "Password": "পাসওয়ার্ড",
+  "Confirm_Password": "পাসওয়ার্ড নিশ্চিত করুন",
+  "Create_Aggreement": "বিকাশ চুক্তি তৈরি করুন",
+  "Execute_Agreement": "চুক্তি সম্পাদন",
   "Welcome": "স্বাগতম"
 }

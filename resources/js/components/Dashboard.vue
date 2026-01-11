@@ -1,8 +1,7 @@
 <template>
   <div class="max-w-md mx-auto mt-10">
     <h1 class="text-2xl font-bold mb-5">{{ $t('Dashboard') }}</h1>
-    <p>Welcome, {{ user.name }}</p>
-    <button @click="logout" class="bg-red-500 text-white p-2 mt-3">Logout</button>
+    <p> {{ $t("Welcome") }}, {{ user.name }}</p>   
   </div>
 </template>
 
@@ -21,7 +20,9 @@ export default {
     const res = await axios.get('/api/user', {
       headers: { Authorization: `Bearer ${token}` }
     });
-    this.user = res.data; //set user
+    this.user = res.data['user']; //set user
+
+    //console.log(res.data);
   },
   methods: {
     async logout() {
@@ -30,7 +31,6 @@ export default {
         headers: { Authorization: `Bearer ${token}` }
       });
       logout();
-      //localStorage.removeItem('token');
       this.$router.push('/login');
     }
   }

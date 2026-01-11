@@ -1,12 +1,12 @@
 <template>
   <div class="max-w-md mx-auto mt-10">
-    <h1 class="text-2xl font-bold mb-5">Register</h1>
+    <h1 class="text-2xl font-bold mb-5">{{ $t("Register") }}</h1>
     <form @submit.prevent="register">
-      <input v-model="name" type="text" placeholder="Name" class="border p-2 w-full mb-3"/>
-      <input v-model="email" type="email" placeholder="Email" class="border p-2 w-full mb-3"/>
-      <input v-model="password" type="password" placeholder="Password" class="border p-2 w-full mb-3"/>
-      <input v-model="password_confirmation" type="password" placeholder="Confirm Password" class="border p-2 w-full mb-3"/>
-      <button class="bg-green-500 text-white p-2 w-full">Register</button>
+      <input v-model="name" type="text" :placeholder="$t('Name')"  class="border p-2 w-full mb-3"/>
+      <input v-model="email" type="email" :placeholder="$t('Email')"   class="border p-2 w-full mb-3"/>
+      <input v-model="password" type="password" :placeholder="$t('Password')"   class="border p-2 w-full mb-3"/>
+      <input v-model="password_confirmation" type="password" :placeholder="$t('Confirm_Password')"  class="border p-2 w-full mb-3"/>
+      <button class="bg-green-500 text-white p-2 w-full">{{ $t("Register") }}</button>
     </form>
   </div>
 </template>

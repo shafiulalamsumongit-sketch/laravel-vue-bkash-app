@@ -3,8 +3,8 @@ import Login from "../components/Login.vue";
 import Register from "../components/Register.vue";
 import Dashboard from "../components/Dashboard.vue";
 import Profile from "../components/Profile.vue";
+import Executeagreement from "../components/Executeagreement.vue";
 
-//export function isAuthenticated() {
 function isAuthenticated() {
   return !!localStorage.getItem('token')
 }
@@ -35,7 +35,11 @@ const routes = [
     path: '/profile',
     component: Profile,
     meta: { requiresAuth: true }
-  }
+  },
+  {
+    path: '/execute-agreement',
+    component: Executeagreement
+  },
 ]
 
 const router = createRouter({
@@ -43,15 +47,11 @@ const router = createRouter({
   routes
 })
 
-/**
- * GLOBAL AUTH GUARD
- */
+
 router.beforeEach((to, from, next) => {
-  // If route requires login
   if (to.meta.requiresAuth && !isAuthenticated()) {
     next('/login')
   }
-  // If route is guest-only and user is logged in
   else if (to.meta.guest && isAuthenticated()) {
     next('/dashboard')
   }

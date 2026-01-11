@@ -1,5 +1,11 @@
+<style>
+.switchLang {
+  cursor:pointer;
+}
+</style>
+
 <template>
-  <div class="flex gap-2">
+  <div class="flex gap-2 switchLang">
     <button
       @click="switchLang('en')"
       :class="{ 'font-bold underline': locale === 'en' }"

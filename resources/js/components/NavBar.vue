@@ -6,7 +6,15 @@
                 <router-link to="/" class="text-xl font-bold text-sky-400">
                     {{ $t("MyApp") }}
                 </router-link>
-                
+                <template v-if="isLoggedIn & !isWalletExists">
+                    <button
+                        @click="handleAggreement"
+                        class="bg-red-500 hover:bg-red-600 px-4 py-1 rounded"
+                    >
+                        {{ $t("Create_Aggreement") }}
+                    </button>
+                </template>
+
                 <!-- Language Switcher -->
                 <language-switcher />
 
@@ -74,16 +82,16 @@
 
             <template v-else>
                 <router-link @click="open = false" to="/dashboard" class="block"
-                    >Dashboard</router-link
+                    > {{ $t("Dashboard") }}</router-link
                 >
                 <router-link @click="open = false" to="/profile" class="block"
-                    >Profile</router-link
+                    > {{ $t("Profile") }}</router-link
                 >
                 <button
                     @click="handleLogout"
                     class="w-full text-left text-red-400"
                 >
-                    Logout
+                     {{ $t("Logout") }}
                 </button>
             </template>
         </div>
@@ -93,14 +101,26 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { isLoggedIn, logout } from "@/utils/auth";
+import axios from "axios";
+import { processAggreement, isWalletExists, isLoggedIn, logout } from "@/utils/auth";
 
 const router = useRouter();
 const open = ref(false);
+const resAggreement = ref([]);
 
 const handleLogout = () => {
     logout();
     open.value = false;
     router.push("/login");
 };
+
+/*  async processAggreement() {
+    await axios.get('/api/wallet/create-aggreement', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  } */
+
+function handleAggreement() {
+    processAggreement();
+}
 </script>

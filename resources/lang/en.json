@@ -5,5 +5,11 @@
   "Logout": "Logout",
   "Profile": "Profile",
   "MyApp": "App",
+  "Name": "Name",
+  "Email": "Email",
+  "Password": "Password",
+  "Confirm_Password": "Confirm Password",
+  "Create_Aggreement": "Create bKash Aggreement",
+  "Execute_Agreement": "Execute Agreement",
   "Welcome": "Welcome"
 }
