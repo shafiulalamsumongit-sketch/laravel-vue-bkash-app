@@ -40,3 +40,37 @@ Redis
 Redis In Windows : Download please memurai from ... https://www.memurai.com/get-memurai<br />
 Installation Tutorials : https://www.youtube.com/watch?v=KaOW36ASSHw<br />
 
+
+Date : 12.1.2014
+
+Please use the below phone number .. sometimes other number not working reported online .<br />
+
+Number 01812345678 <br />
+PIN : 12121 <br />
+OTP : 123456 <br />
+
+Demo Work updated :<br />
+1. Bkash payment with Tokenized Agreement<br />
+2. Refund<br />
+
+Remaining :<br />
+1. listing with pagination<br />
+2. Pdf<br />
+3. Redis<br />
+
+Work Samples :<br />
+
+Payment :
+Step 1 : Assume we have created an agreement tokwn already using 01812345678.<br />
+Step 2 : Do a test payment using Tokenized Agreement<br />
+a. https://snipboard.io/UL2xBD.jpg   projecy payment form <br />
+b. https://snipboard.io/xBgOF7.jpg   bkash payment form <br />
+c. https://snipboard.io/W3htK8.jpg  pin 12121  <br />
+c. https://snipboard.io/egSfj4.jpg  payment success <br />
+
+Refund :
+1. Using the paymentID and trxId from any payment .. in real life we can track them by invoice or order id.<br />
+2. https://snipboard.io/xmp1C3.jpg Using the paymentID and trxId<br />
+3. https://snipboard.io/E0i6fN.jpg  form submission.<br />
+4. https://snipboard.io/vZhlHq.jpg refund response<br />
+
