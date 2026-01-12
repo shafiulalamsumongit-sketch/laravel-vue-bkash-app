@@ -66,7 +66,7 @@ Step 2 : Do a test payment using Tokenized Agreement<br />
 a. https://snipboard.io/UL2xBD.jpg   projecy payment form <br />
 b. https://snipboard.io/xBgOF7.jpg   bkash payment form <br />
 c. https://snipboard.io/W3htK8.jpg  pin 12121  <br />
-c. https://snipboard.io/egSfj4.jpg  payment success <br />
+c. https://snipboard.io/egSfj4.jpg  payment success - note: </b>some time please refresh the page</b><br />
 c. https://snipboard.io/NuzwQF.jpg  Database table -  also using HeidiSql
 
 Refund :
