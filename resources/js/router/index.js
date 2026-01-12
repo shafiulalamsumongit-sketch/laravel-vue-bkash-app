@@ -4,6 +4,10 @@ import Register from "../components/Register.vue";
 import Dashboard from "../components/Dashboard.vue";
 import Profile from "../components/Profile.vue";
 import Executeagreement from "../components/Executeagreement.vue";
+import Bkashpayment from "../components/Bkashpayment.vue";
+import Executeapayment from "../components/Executeapayment.vue";
+import Bkashrefund from "../components/Bkashrefund.vue";
+
 
 function isAuthenticated() {
   return !!localStorage.getItem('token')
@@ -38,8 +42,25 @@ const routes = [
   },
   {
     path: '/execute-agreement',
-    component: Executeagreement
+    component: Executeagreement,
+    meta: { requiresAuth: true }
   },
+  {
+    path: '/process-payment',
+    component: Bkashpayment,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/execute-payment',
+    component: Executeapayment,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/process-refund',
+    component: Bkashrefund,
+    meta: { requiresAuth: true }
+  }
+  
 ]
 
 const router = createRouter({

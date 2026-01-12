@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->decimal('balance', 12, 2)->default(0);
-             $table->string('token', 255)->unique();
+            $table->string('token', 255)->unique();
             $table->string('masked', 255);
             $table->timestamps();
         });

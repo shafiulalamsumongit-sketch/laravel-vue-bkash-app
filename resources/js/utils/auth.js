@@ -31,5 +31,4 @@ export async function processAggreement() {
     }else{
        alert(err.response.data.message || "Invalid - Failed");
     }
-    //console.log(res.data);
 }

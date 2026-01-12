@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\User;
-use App\Models\WalletTransaction;
+use App\Models\Transaction;
 
 
 class Wallet extends Model
@@ -19,7 +19,7 @@ class Wallet extends Model
 
     public function transactions()
     {
-        return $this->hasMany(WalletTransaction::class);
+        return $this->hasMany(Transaction::class);
     }
 }
 

@@ -38,11 +38,9 @@ export default {
           const res = await axios.post('/api/wallet/execute-aggreement', {payment_id: paymentID}, {
               headers: { Authorization: `Bearer ${token}` }
           });
-          console.log(res.data);
           this.error = '';
           this.success = '';  
           this.message = '';   
-
           this.message = res.data.statusMessage;  
           if(res.data.statusCode == 'error'){
             this.error = res.data.statusCode ;            
@@ -52,12 +50,12 @@ export default {
         },
     },
      mounted() {
+
         const token = localStorage.getItem("token");
         const urlParams = new URLSearchParams(window.location.search);
         const paymentID = urlParams.get("paymentID");
         const status = urlParams.get("status");
         const signature = urlParams.get("signature");
-
         if(status == 'failure' ) {
           this.error = 'error';
           this.message = 'There are problems while processing . Please try again later.';  
@@ -68,8 +66,7 @@ export default {
         else{
           this.fetchApiData(paymentID);
         }
-
-     
+             
     },
 };
 </script>

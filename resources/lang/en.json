@@ -11,5 +11,8 @@
   "Confirm_Password": "Confirm Password",
   "Create_Aggreement": "Create bKash Aggreement",
   "Execute_Agreement": "Execute Agreement",
+  "Create_Payment": "Submit Payment",
+  "Refund": "Refund",
+  "Execute_Payment": "Execute Payment",  
   "Welcome": "Welcome"
 }

@@ -18,4 +18,10 @@ Route::middleware('auth:sanctum')->group(function () {
     //wallet
     Route::get('/wallet/create-aggreement', [WalletController::class, 'createAgreement']);
     Route::post('/wallet/execute-aggreement', [WalletController::class, 'executeAgreement']);
+    //payment
+    Route::post('/payment/payment-with-agreement', [WalletController::class, 'createPayment']);
+    Route::post('/payment/status-payment', [WalletController::class, 'statusPayment']);
+    //refund
+    Route::post('/refund', [WalletController::class, 'createRefund']);
 });
+

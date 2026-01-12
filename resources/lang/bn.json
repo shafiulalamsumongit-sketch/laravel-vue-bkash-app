@@ -11,5 +11,8 @@
   "Confirm_Password": "পাসওয়ার্ড নিশ্চিত করুন",
   "Create_Aggreement": "বিকাশ চুক্তি তৈরি করুন",
   "Execute_Agreement": "চুক্তি সম্পাদন",
+  "Create_Payment": "পেমেন্ট করুন",
+  "Refund": "ফেরত",
+  "Execute_Payment": "পেমেন্ট করুন",  
   "Welcome": "স্বাগতম"
 }
