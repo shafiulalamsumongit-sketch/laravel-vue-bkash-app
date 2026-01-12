@@ -60,7 +60,7 @@ Remaining :<br />
 
 Work Samples :<br />
 
-Payment :
+Payment :<br />
 Step 1 : Assume we have created an agreement tokwn already using 01812345678.<br />
 Step 2 : Do a test payment using Tokenized Agreement<br />
 a. https://snipboard.io/UL2xBD.jpg   projecy payment form <br />
