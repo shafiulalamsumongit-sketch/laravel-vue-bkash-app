@@ -1,7 +1,22 @@
 <template>
     <div class="max-w-md mx-auto mt-10">
         <h1 class="text-2xl font-bold mb-5">{{ $t("Payment") }}</h1>
-        <form @submit.prevent="paymentSubmit">
+        <form class="max-w-sm mx-auto" @submit.prevent="paymentSubmit">
+            <select
+                id="order_id"
+                v-model="order_id"
+                class="mb-4 block w-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
+            >
+                <option value="">Choose an order</option>
+                <option value="ord_1">Order 1</option>
+                <option value="ord_2">Order 2</option>
+                <option value="ord_3">Order 3</option>
+                <option value="ord_4">Order 4</option>
+                <option value="ord_5">Order 5</option>
+                <option value="ord_6">Order 6</option>
+                <option value="ord_7">Order 7</option>
+                <option value="ord_8">Order 8</option>
+            </select>
             <input
                 v-model="amount"
                 type="number"
@@ -27,6 +42,7 @@ const token = localStorage.getItem("token");
 export default {
     data() {
         return {
+            order_id: "",
             amount: "",
             isSubmitting: false,
         };
@@ -35,15 +51,18 @@ export default {
         async paymentSubmit() {
             if (this.amount == "") {
                 alert("Amount empty");
+            } else if (this.order_id == "") {
+                alert("Select an order");
             } else {
                 if (this.isSubmitting) {
                     return;
                 }
                 this.isSubmitting = true; // Disable the button
+                 this.isSubmitting = false;
                 const res = await axios.post(
                     "/api/payment/payment-with-agreement",
                     {
-                        amount: this.amount,
+                        amount: this.amount,order_id: this.order_id,
                     },
                     {
                         headers: { Authorization: `Bearer ${token}` },

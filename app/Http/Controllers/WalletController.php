@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class WalletController extends Controller
@@ -113,6 +115,20 @@ class WalletController extends Controller
     public function createPayment(Request $request)
     {
         $user = $request->user();
+        $orderId = 'min-' . $request->order_id;
+
+        $lockTtl = 10 * 60;  // 10 minutes
+        $lockKey = "{$user['id']}:{$orderId}";
+        $lockKey = "payment:state:$lockKey";
+
+        if (Redis::get($lockKey) == 'pending') {
+            return response()->json([
+                'statusCode' => 'error',
+                'statusMessage' => 'Order id is in used pending.',
+            ]);
+        }
+        Redis::setex($lockKey, $lockTtl, 'pending');
+
         $wallet = Wallet::where('user_id', $user['id'])->first();
         if (!isset($wallet['token']) && empty($wallet['token'])) {
             return response()->json([
@@ -120,8 +136,10 @@ class WalletController extends Controller
                 'statusMessage' => 'Agreement wallet not created yet. Please make an agreement at first.',
             ]);
         }
+
         $agreementToken = $wallet['token'];
         $apiToken = $this->createApiToken($request, $user);
+
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
@@ -129,13 +147,13 @@ class WalletController extends Controller
             'X-App-Key' => config('bkash.app_key'),
         ])->post(config('bkash.base_url') . '/tokenized/checkout/create', [
             'mode' => '0001',
-            'payerReference' => 'M1000-100' . $user['id'] . rand(1, 10000),
+            'payerReference' => $orderId,
             'callbackURL' => config('bkash.payment_callback_url'),
             'agreementID' => $agreementToken,
             'currency' => 'BDT',
             'amount' => number_format($request->amount, 2, '.', ''),
             'intent' => 'sale',
-            'merchantInvoiceNumber' => 'M1000-100' . $user['id'] . rand(1, 10000),
+            'merchantInvoiceNumber' => $orderId,
         ]);
         return $response->json();
     }
@@ -158,48 +176,66 @@ class WalletController extends Controller
         ])->post(config('bkash.base_url') . '/tokenized/checkout/payment/status', [
             'paymentID' => $request->payment_id
         ]);
-
         $transactionData = $response->json();
-
-        if ($transactionData['transactionStatus'] == 'Initiated') {
-            $apiToken = $this->createApiToken($request, $user);  // 2nd
-            $response = Http::withHeaders([
-                'Accept' => 'application/json',
-                'Authorization' => $apiToken['id_token'],
-                'X-App-Key' => config('bkash.app_key'),
-            ])->post(config('bkash.base_url') . '/tokenized/checkout/execute', [
-                'paymentID' => $request->payment_id
+        $user = $request->user();
+        $orderId = 'min-' . $request->order_id;
+        $lockKey = "payment:state:{$user['id']}:{$transactionData['merchantInvoice']}";
+        if (Redis::get($lockKey) == 'completed') {
+            return response()->json([
+                'statusCode' => 'found',
+                'message' => 'Payment already completed.',
+                'statusMessage' => $transactionData,
             ]);
-            $transactionData = $response->json();
         }
-
-        $walletTransaction = Transaction::where('payment_id', $request->payment_id)->first();
-
-        if (!isset($walletTransaction['payment_id']) && empty($walletTransaction['payment_id'])) {
-            if ($transactionData['statusCode'] == '0000') {
-                $transaction = Transaction::create([
-                    'wallet_id' => $wallet['id'],
-                    'type' => 'debit',
-                    'amount' => $transactionData['amount'],
-                    'description' => $transactionData['amount'],
-                    'payment_id' => $transactionData['paymentID'],
-                    'agreement_id' => $transactionData['agreementID'],
-                    'trx_iD' => $transactionData['trxID'],
-                    'merchant_invoice' => $transactionData['merchantInvoice'],
-                    'transaction_status' => $transactionData['transactionStatus'],
-                    'service_fee' => $transactionData['serviceFee'],
-                    'credited_amount' => $transactionData['creditedAmount'],
-                    'maxRefundable_amount' => $transactionData['maxRefundableAmount'],
-                    'status_code' => $transactionData['statusCode'],
-                    'status_message' => $transactionData['statusMessage'],
+        if (!array_key_exists('trx_iD', $transactionData)) {
+            try {
+                $apiToken = $this->createApiToken($request, $user);  // 2nd
+                $response = Http::withHeaders([
+                    'Accept' => 'application/json',
+                    'Authorization' => $apiToken['id_token'],
+                    'X-App-Key' => config('bkash.app_key'),
+                ])->post(config('bkash.base_url') . '/tokenized/checkout/execute', [
+                    'paymentID' => $request->payment_id
+                ]);
+                $transactionData = $response->json();
+            } catch (Exception $e) {
+                return response()->json([
+                    'statusCode' => 'error',
+                    'statusMessage' => 'Caught exception: ',
+                    $e->getMessage(),
+                    "\n",
                 ]);
             }
         }
+        $walletTransaction = Transaction::where('payment_id', $request->payment_id)->first();
+        if (!isset($walletTransaction['payment_id']) && empty($walletTransaction['payment_id'])) {
+            $transaction = Transaction::create([
+                'wallet_id' => $wallet['id'],
+                'type' => 'debit',
+                'amount' => $transactionData['amount'],
+                'description' => $transactionData['amount'],
+                'payment_id' => $transactionData['paymentID'],
+                'agreement_id' => $transactionData['agreementID'],
+                'trx_iD' => $transactionData['trxID'],
+                'merchant_invoice' => $transactionData['merchantInvoiceNumber'],
+                'transaction_status' => $transactionData['transactionStatus'],
+                'service_fee' => 1,
+                'credited_amount' => $transactionData['amount'],
+                'maxRefundable_amount' => $transactionData['maxRefundableAmount'],
+                'status_code' => $transactionData['statusCode'],
+                'status_message' => $transactionData['statusMessage'],
+            ]);
+        }
+        Redis::set($lockKey, 'completed');
+        // Redis::del($lockKey);
         return response()->json([
             'statusCode' => 'found',
+            'stage' => 3,
+            'lockKey' => 'completed',
             'statusMessage' => $transactionData,
         ]);
     }
+
 
     public function createRefund(Request $request)
     {

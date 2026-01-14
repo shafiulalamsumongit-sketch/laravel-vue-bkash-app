@@ -76,13 +76,13 @@ export default {
             this.success = "";
             this.message = "";
             this.message = res.data.statusMessage;
+            //
             if (res.data.statusCode == "error") {
                 this.error = res.data.statusCode;
             } else if (res.data.statusCode == "found") {
                 this.success = res.data.statusCode;
                 this.message = res.data;
                 this.apiData = res.data.statusMessage;
-                console.log(paymentID);
             }
         },
     },
@@ -92,17 +92,16 @@ export default {
         const paymentID = urlParams.get("paymentID");
         const status = urlParams.get("status");
         const signature = urlParams.get("signature");
-
         if (status == "failure") {
             this.error = "error";
-            this.message =
-                "There are problems while processing . Please try again later.";
+            this.message ="There are problems while processing . Please try again later.";
         } else if (status == "cancel") {
             this.error = "error";
             this.message = "Payment process canceled. Please try again later.";
         } else {
-            this.fetchPaymmentStatus(paymentID);
+            //this.fetchPaymmentStatus(paymentID);
         }
+        this.fetchPaymmentStatus(paymentID);
     },
 };
 </script>
