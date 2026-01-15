@@ -22,7 +22,7 @@
                     <tbody>
                         <tr>
                             <td class="border border-green-600">
-                                paymentID
+                                PaymentID
                             </td>
                             <td class="border border-green-600">
                                 {{ apiData.paymentID }}
@@ -76,7 +76,6 @@ export default {
             this.success = "";
             this.message = "";
             this.message = res.data.statusMessage;
-            //
             if (res.data.statusCode == "error") {
                 this.error = res.data.statusCode;
             } else if (res.data.statusCode == "found") {

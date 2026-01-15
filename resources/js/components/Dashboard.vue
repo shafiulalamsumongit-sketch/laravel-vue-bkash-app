@@ -2,6 +2,9 @@
   <div class="max-w-md mx-auto mt-10">
     <h1 class="text-2xl font-bold mb-5">{{ $t('Dashboard') }}</h1>
     <p> {{ $t("Welcome") }}, {{ user.name }}</p>   
+
+<transaction-history />
+    
   </div>
 </template>
 

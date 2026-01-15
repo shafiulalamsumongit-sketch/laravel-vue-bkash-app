@@ -23,5 +23,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/payment/status-payment', [WalletController::class, 'statusPayment']);
     //refund
     Route::post('/refund', [WalletController::class, 'createRefund']);
+    //transaction histories
+    Route::get('/transaction/histories', [WalletController::class, 'transactionHistories']);
+    Route::get('/transaction/download', [WalletController::class, 'transactionDownload']);
 });
 
+ 

@@ -7,7 +7,7 @@ import Executeagreement from "../components/Executeagreement.vue";
 import Bkashpayment from "../components/Bkashpayment.vue";
 import Executeapayment from "../components/Executeapayment.vue";
 import Bkashrefund from "../components/Bkashrefund.vue";
-
+import TransactionHistory from "../components/TransactionHistory.vue";
 
 function isAuthenticated() {
   return !!localStorage.getItem('token')
@@ -60,14 +60,18 @@ const routes = [
     component: Bkashrefund,
     meta: { requiresAuth: true }
   }
-  
+  ,
+  {
+    path: '/transaction-histories',
+    component: TransactionHistory,
+    meta: { requiresAuth: true }
+  }  
 ]
 
 const router = createRouter({
   history: createWebHistory(),
   routes
 })
-
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !isAuthenticated()) {

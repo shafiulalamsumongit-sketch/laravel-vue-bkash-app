@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -42,11 +45,11 @@ class WalletController extends Controller
             'X-App-Key' => config('bkash.app_key'),
         ])->post(config('bkash.base_url') . '/tokenized/checkout/create', [
             'mode' => '0000',
-            'payerReference' => 'CUST-1000' . $user['id'] . rand(1, 100),
+            'payerReference' => 'CUST-1000' . auth()->id() . rand(1, 100),
             'callbackURL' => config('bkash.agreement_callback_url'),
             'currency' => 'BDT',
             'amount' => '10.0',
-            'merchantInvoiceNumber' => 'INV-1000' . $user['id'] . rand(1, 100),
+            'merchantInvoiceNumber' => 'INV-1000' . auth()->id() . rand(1, 100),
         ]);
     }
 
@@ -71,7 +74,7 @@ class WalletController extends Controller
     public function executeAgreement(Request $request)
     {
         $user = $request->user();
-        $wallet = Wallet::where('user_id', $user['id'])->first();
+        $wallet = Wallet::where('user_id', auth()->id())->first();
         if (isset($wallet['token']) && !empty($wallet['token'])) {
             return response()->json([
                 'statusCode' => 'error',
@@ -118,7 +121,7 @@ class WalletController extends Controller
         $orderId = 'min-' . $request->order_id;
 
         $lockTtl = 10 * 60;  // 10 minutes
-        $lockKey = "{$user['id']}:{$orderId}";
+        $lockKey = '{' . auth()->id() . "}:{$orderId}";
         $lockKey = "payment:state:$lockKey";
 
         if (Redis::get($lockKey) == 'pending') {
@@ -129,7 +132,7 @@ class WalletController extends Controller
         }
         Redis::setex($lockKey, $lockTtl, 'pending');
 
-        $wallet = Wallet::where('user_id', $user['id'])->first();
+        $wallet = Wallet::where('user_id', auth()->id())->first();
         if (!isset($wallet['token']) && empty($wallet['token'])) {
             return response()->json([
                 'statusCode' => 'error',
@@ -162,7 +165,7 @@ class WalletController extends Controller
     {
         $user = $request->user();
         $apiToken = $this->createApiToken($request, $user);
-        $wallet = Wallet::where('user_id', $user['id'])->first();
+        $wallet = Wallet::where('user_id', auth()->id())->first();
         if (!isset($wallet['id']) && empty($wallet['id'])) {
             return response()->json([
                 'statusCode' => 'error',
@@ -179,7 +182,7 @@ class WalletController extends Controller
         $transactionData = $response->json();
         $user = $request->user();
         $orderId = 'min-' . $request->order_id;
-        $lockKey = "payment:state:{$user['id']}:{$transactionData['merchantInvoice']}";
+        $lockKey = 'payment:state:{' . auth()->id() . "}:{$transactionData['merchantInvoice']}";
         if (Redis::get($lockKey) == 'completed') {
             return response()->json([
                 'statusCode' => 'found',
@@ -236,12 +239,11 @@ class WalletController extends Controller
         ]);
     }
 
-
     public function createRefund(Request $request)
     {
         $user = $request->user();
         $apiToken = $this->createApiToken($request, $user);
-        $wallet = Wallet::where('user_id', $user['id'])->first();
+        $wallet = Wallet::where('user_id', auth()->id())->first();
         if (!isset($wallet['id']) && empty($wallet['id'])) {
             return response()->json([
                 'statusCode' => 'error',
@@ -260,5 +262,118 @@ class WalletController extends Controller
             'reason' => 'Test Refund'
         ]);
         return $response->json();
+    }
+
+    public function transactionHistories(Request $request)
+    {
+        $user = $request->user();
+        $wallet = $request
+            ->user()
+            ->wallet()
+            ->where('user_id', auth()->id())
+            ->first();
+        $transactions = $wallet
+            ->transactions()
+            ->latest()
+            ->paginate(1);
+        return response()->json([
+            'wallet' => $wallet,
+            'transactions' => $transactions
+        ]);
+    }
+
+    public function transactionDownload11(Request $request)
+    {
+        $user = $request->user();
+        $wallet = $request
+            ->user()
+            ->wallet()
+            ->where('user_id', auth()->id())
+            ->first();
+        $transactions = $wallet
+            ->transactions();
+
+        $gotenbergUrl = 'http://localhost:3000/forms/chromium/convert/html';
+        $html = <<<HTML
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="utf-8">
+                    <title>Gotenberg PDF</title>
+                    <style>
+                        body { font-family: Arial; }
+                        h1 { color: green; }
+                    </style>
+                </head>
+                <body>
+                    <h1>Hello Gotenberg 🚀</h1>
+                    <p>PDF generated using PHP + Docker</p>
+                </body>
+                </html>
+            HTML;
+        // create temp html file
+        $tmpFile = tempnam(sys_get_temp_dir(), 'gt_') . '.html';
+        file_put_contents($tmpFile, $html);
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL => $gotenbergUrl,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => [
+                'files' => new \CURLFile($tmpFile, 'text/html', 'index.html'),
+            ],
+        ]);
+        $pdf = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        unlink($tmpFile);
+        if ($httpCode !== 200) {
+            die('PDF generation failed');
+        }
+        file_put_contents('output000000.pdf', $pdf);
+        $filePath = 'output000000.pdf';  // Adjust the path as necessary
+        if (!file_exists($filePath)) {
+            return response()->json(['error' => 'File not found.'], 404);
+        }
+        $headers = [
+            'Content-Type' => 'application/pdf',
+        ];
+        return response()->download($filePath, 'output000000.pdf', $headers);
+    }
+
+    public function transactionDownload(Request $request)
+    {
+        $user = $request->user();
+        $wallet = $request
+            ->user()
+            ->wallet()
+            ->where('user_id', auth()->id())
+            ->first();
+
+        $transactions = $wallet
+            ? $wallet->transactions()->get()
+            : collect();
+
+     
+
+        $data['user'] = $user;
+        $data['transactions'] = $transactions;
+        $html = View::make('transaction_pdf', compact('user', 'transactions'))->render();
+
+        $user = $request->user();
+        $gotenbergUrl = 'http://localhost:3000/forms/chromium/convert/html';
+        $response = Http::attach(
+            'files', $html, 'index.html'
+        )->post($gotenbergUrl, [
+            'paperWidth' => 8.27,
+            'paperHeight' => 11.69,
+        ]);
+        $fileName = 'transactions_' . time() . '.pdf';
+        Storage::disk('public')->put($fileName, $response->body());
+        return response()->download(
+            storage_path('app/public/' . $fileName),
+            $fileName,
+            ['Content-Type' => 'application/pdf']
+        )->deleteFileAfterSend(false);
     }
 }
