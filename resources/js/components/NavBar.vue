@@ -1,5 +1,7 @@
 <template>
     <nav class="bg-gray-900 text-white">
+
+    
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between h-16 items-center">
                 <!-- Logo -->
