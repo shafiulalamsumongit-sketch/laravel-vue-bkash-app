@@ -349,17 +349,12 @@ class WalletController extends Controller
             ->wallet()
             ->where('user_id', auth()->id())
             ->first();
-
         $transactions = $wallet
             ? $wallet->transactions()->get()
             : collect();
-
-     
-
         $data['user'] = $user;
         $data['transactions'] = $transactions;
         $html = View::make('transaction_pdf', compact('user', 'transactions'))->render();
-
         $user = $request->user();
         $gotenbergUrl = 'http://localhost:3000/forms/chromium/convert/html';
         $response = Http::attach(
