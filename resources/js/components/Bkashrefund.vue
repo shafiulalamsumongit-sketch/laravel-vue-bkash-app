@@ -1,37 +1,26 @@
 <template>
     <div class="max-w-md mx-auto mt-10">
-        <h1 class="text-2xl font-bold mb-5">{{ $t("Refund") }}</h1>
-        <form @submit.prevent="paymentSubmit">
-            <input
-                v-model="paymentID"
-                type="text"
-                placeholder="paymentID"
-                class="border p-2 w-full mb-3"
-            />
-            <input
-                v-model="trxId"
-                type="text"
-                placeholder="trxId"
-                class="border p-2 w-full mb-3"
-            />
-            <button
-                :disabled="isSubmitting"
-                class="bg-blue-500 text-white p-2 w-full"
-            >
+        <h1 class="max-w-sm mx-auto text-2xl font-bold mb-5">
+            {{ $t("Refund") }}
+        </h1>
+        <form class="max-w-sm mx-auto" @submit.prevent="paymentSubmit">
+            <input v-model="paymentID" type="text" aria-describedby="helper-text-explanation"
+                class="block w-full mb-3 px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
+                :placeholder="$t('paymentID')" required />
+            <input v-model="trxId" type="text" aria-describedby="helper-text-explanation"
+                class="block w-full mb-3 px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
+                :placeholder="$t('trxId')" required />
+            <button :disabled="isSubmitting" class="bg-blue-500 text-white p-2 w-full">
                 {{ isSubmitting ? "Submitting..." : $t("Submit") }}
             </button>
         </form>
-
-        <template v-if="success != ''">        
+        <template v-if="success != ''">
             <div class="bg-green-500 hover:bg-green-600 px-4 py-1 rounded">
                 {{ apiData }}
             </div>
         </template>
-
-
     </div>
 </template>
-
 <script>
 import axios from "axios";
 import { useRoute } from "vue-router";

@@ -14,6 +14,27 @@
         @endif
 </head>
 <body>
-  <div id="app"></div>
+ 
+  <div className="fixed bottom-0 left-0 bg-red-500 w-screen h-12">
+<div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
+      <span class="text-sm text-body sm:text-center">© 2026 
+        <a href="https://flowbite.com/" class="hover:underline">Agni</a>. 
+    </span>
+    </div>
+</div>
+<!-- Sticky Footer Wrapper -->
+<div class="flex flex-col min-h-screen justify-between">
+    <main class="flex-grow p-4">
+        <section>
+             <div id="app"></div>
+        </section>
+    </main>
+    <footer class="p-4 bg-rose-300">
+        Footer
+    </footer>
+
+</div>
+
+
 </body>
 </html>

@@ -6,42 +6,12 @@
                 {{ message }}
             </div>
         </template>
-        <template v-if="success != ''">        
-            <div class="bg-green-200">
-                <table
-                    class="table-fixed border-separate border border-green-900"
-                >
-                    <thead>
-                        <tr>
-                            <th class="border border-green-600 w-1/4">
-                                
-                            </th>
-                            <th class="border border-green-600 w-3/4"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="border border-green-600">
-                                PaymentID
-                            </td>
-                            <td class="border border-green-600">
-                                {{ apiData.paymentID }}
-                            </td>
-                        </tr> 
-                        <tr>
-                            <td class="border border-green-600">
-                                trxId
-                            </td>
-                            <td class="border border-green-600">
-                                {{ apiData.trxID }}
-                            </td>
-                        </tr>                  
-                    </tbody>
-                </table>
-            </div>
-            <br/>
-            <div class="bg-green-500 hover:bg-green-600 px-4 py-1 rounded">
-                {{ message }}
+        <template v-if="success != ''">
+            <br />
+            <div class="px-4 py-1 rounded bg-success-soft">
+                <b>PaymentID :</b> {{ apiData.paymentID }} <br />
+                <b>trxId :</b> {{ apiData.trxID }} <br />
+                <b>Message : </b><br />{{ message }}
             </div>
         </template>
     </div>
@@ -93,7 +63,8 @@ export default {
         const signature = urlParams.get("signature");
         if (status == "failure") {
             this.error = "error";
-            this.message ="There are problems while processing . Please try again later.";
+            this.message =
+                "There are problems while processing . Please try again later.";
         } else if (status == "cancel") {
             this.error = "error";
             this.message = "Payment process canceled. Please try again later.";

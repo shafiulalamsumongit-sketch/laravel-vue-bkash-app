@@ -2,11 +2,8 @@
     <div class="max-w-md mx-auto mt-10">
         <h1 class="max-w-sm mx-auto text-2xl font-bold mb-5">{{ $t("Payment") }}</h1>
         <form class="max-w-sm mx-auto" @submit.prevent="paymentSubmit">
-            <select
-                id="order_id"
-                v-model="order_id"
-                class="mb-4 block w-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
-            >
+            <select id="order_id" v-model="order_id"
+                class="mb-4 block w-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body">
                 <option value="">Choose an order</option>
                 <option value="ord_1">Order 1</option>
                 <option value="ord_2">Order 2</option>
@@ -23,11 +20,10 @@
                 :placeholder="$t('Amount')"
                 class="border p-2 w-full mb-3"
             /> -->
-            <input v-model="amount" type="number"  aria-describedby="helper-text-explanation" class="block w-full mb-3  px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body" :placeholder="$t('Amount')" required />
-            <button
-                :disabled="isSubmitting"
-                class="bg-blue-500 text-white p-2 w-full"
-            >
+            <input v-model="amount" type="number" aria-describedby="helper-text-explanation"
+                class="block w-full mb-3  px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
+                :placeholder="$t('Amount')" required />
+            <button :disabled="isSubmitting" class="bg-blue-500 text-white p-2 w-full">
                 {{ isSubmitting ? "Submitting..." : $t("Submit") }}
             </button>
         </form>
@@ -59,11 +55,11 @@ export default {
                     return;
                 }
                 this.isSubmitting = true; // Disable the button
-                 this.isSubmitting = false;
+                this.isSubmitting = false;
                 const res = await axios.post(
                     "/api/payment/payment-with-agreement",
                     {
-                        amount: this.amount,order_id: this.order_id,
+                        amount: this.amount, order_id: this.order_id,
                     },
                     {
                         headers: { Authorization: `Bearer ${token}` },
