@@ -107,8 +107,3 @@ Number 01812345678 <br />
 PIN : 12121 <br />
 OTP : 123456 <br />
 
-Please use the below phone number .. sometimes other number not working reported online .<br />
-
-Number 01812345678 <br />
-PIN : 12121 <br />
-OTP : 123456 <br />
