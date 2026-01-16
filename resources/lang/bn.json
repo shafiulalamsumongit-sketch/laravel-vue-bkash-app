@@ -9,10 +9,13 @@
   "Email": "ইমেল",
   "Password": "পাসওয়ার্ড",
   "Confirm_Password": "পাসওয়ার্ড নিশ্চিত করুন",
-  "Create_Aggreement": "বিকাশ চুক্তি তৈরি করুন",
+  "Create_Aggreement": "চুক্তি",
   "Execute_Agreement": "চুক্তি সম্পাদন",
   "Create_Payment": "পেমেন্ট করুন",
+  "Payment": "পেমেন্ট",
   "Refund": "ফেরত",
+  "Submit": "সমর্পণ",
+  "Transaction": "লেনদেন",
   "Execute_Payment": "পেমেন্ট করুন",  
   "Welcome": "স্বাগতম"
 }

@@ -1,6 +1,6 @@
 <template>
     <div class="max-w-md mx-auto mt-10">
-        <h1 class="text-2xl font-bold mb-5">{{ $t("Payment") }}</h1>
+        <h1 class="max-w-sm mx-auto text-2xl font-bold mb-5">{{ $t("Payment") }}</h1>
         <form class="max-w-sm mx-auto" @submit.prevent="paymentSubmit">
             <select
                 id="order_id"
@@ -17,12 +17,13 @@
                 <option value="ord_7">Order 7</option>
                 <option value="ord_8">Order 8</option>
             </select>
-            <input
+            <!-- <input
                 v-model="amount"
                 type="number"
                 :placeholder="$t('Amount')"
                 class="border p-2 w-full mb-3"
-            />
+            /> -->
+            <input v-model="amount" type="number"  aria-describedby="helper-text-explanation" class="block w-full mb-3  px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body" :placeholder="$t('Amount')" required />
             <button
                 :disabled="isSubmitting"
                 class="bg-blue-500 text-white p-2 w-full"

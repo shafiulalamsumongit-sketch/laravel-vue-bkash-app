@@ -9,10 +9,13 @@
   "Email": "Email",
   "Password": "Password",
   "Confirm_Password": "Confirm Password",
-  "Create_Aggreement": "Create bKash Aggreement",
+  "Create_Aggreement": "Aggreement",
   "Execute_Agreement": "Execute Agreement",
   "Create_Payment": "Submit Payment",
+  "Payment": "Payment",
   "Refund": "Refund",
+  "Transaction": "Transaction",  
   "Execute_Payment": "Execute Payment",  
+  "Submit": "Submit",    
   "Welcome": "Welcome"
 }
