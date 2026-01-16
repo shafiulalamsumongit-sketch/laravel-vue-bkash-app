@@ -119,19 +119,17 @@ class WalletController extends Controller
     {
         $user = $request->user();
         $orderId = 'min-' . $request->order_id;
-
         $lockTtl = 10 * 60;  // 10 minutes
-        $lockKey = '{' . auth()->id() . "}:{$orderId}";
-        $lockKey = "payment:state:$lockKey";
-
-        if (Redis::get($lockKey) == 'pending') {
+        $lockKey = $orderId;
+        $result = Redis::setnx($lockKey, 'pending');
+        if ($result) {
+            // Key was set (did not exist before)
+        } else {
             return response()->json([
                 'statusCode' => 'error',
                 'statusMessage' => 'Order id is in used pending.',
             ]);
         }
-        Redis::setex($lockKey, $lockTtl, 'pending');
-
         $wallet = Wallet::where('user_id', auth()->id())->first();
         if (!isset($wallet['token']) && empty($wallet['token'])) {
             return response()->json([
@@ -139,10 +137,8 @@ class WalletController extends Controller
                 'statusMessage' => 'Agreement wallet not created yet. Please make an agreement at first.',
             ]);
         }
-
         $agreementToken = $wallet['token'];
         $apiToken = $this->createApiToken($request, $user);
-
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
@@ -182,7 +178,7 @@ class WalletController extends Controller
         $transactionData = $response->json();
         $user = $request->user();
         $orderId = 'min-' . $request->order_id;
-        $lockKey = 'payment:state:{' . auth()->id() . "}:{$transactionData['merchantInvoice']}";
+        $lockKey = $transactionData['merchantInvoice'];
         if (Redis::get($lockKey) == 'completed') {
             return response()->json([
                 'statusCode' => 'found',
@@ -229,7 +225,7 @@ class WalletController extends Controller
                 'status_message' => $transactionData['statusMessage'],
             ]);
         }
-        Redis::set($lockKey, 'completed');
+         Redis::set($lockKey, 'completed');
         // Redis::del($lockKey);
         return response()->json([
             'statusCode' => 'found',
@@ -275,7 +271,7 @@ class WalletController extends Controller
         $transactions = $wallet
             ->transactions()
             ->latest()
-            ->paginate(1);
+            ->paginate(2);
         return response()->json([
             'wallet' => $wallet,
             'transactions' => $transactions

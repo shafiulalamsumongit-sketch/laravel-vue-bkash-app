@@ -29,7 +29,7 @@
                         </li>
 
                         <li>
-                            <router-link to="/dashboard" @click.prevent="handleAggreement"
+                            <router-link to="/execute-agreement" @click.prevent="handleAggreement"
                                 class="hover:underline block py-2 px-3 text-white bg-brand rounded md:bg-transparent md:text-fg-brand md:p-0">
                                 {{ $t("Create_Aggreement") }}
                             </router-link>

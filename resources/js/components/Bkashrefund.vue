@@ -15,9 +15,9 @@
             </button>
         </form>
         <template v-if="success != ''">
-            <div class="bg-green-500 hover:bg-green-600 px-4 py-1 rounded">
-                {{ apiData }}
-            </div>
+          <div class="px-4 py-1 rounded bg-success-soft">
+                 {{ apiData }}
+          </div>
         </template>
     </div>
 </template>

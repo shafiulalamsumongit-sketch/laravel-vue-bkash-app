@@ -68,9 +68,7 @@ export default {
         } else if (status == "cancel") {
             this.error = "error";
             this.message = "Payment process canceled. Please try again later.";
-        } else {
-            //this.fetchPaymmentStatus(paymentID);
-        }
+        } 
         this.fetchPaymmentStatus(paymentID);
     },
 };

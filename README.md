@@ -75,3 +75,40 @@ Refund :
 3. https://snipboard.io/E0i6fN.jpg  form submission.<br />
 4. https://snipboard.io/vZhlHq.jpg refund response<br />
 
+
+Date : 16.1.2014 <br />
+
+Login : https://snipboard.io/WtJedb.jpg <br />
+Register : https://snipboard.io/Y3lFbg.jpg <br />
+
+Agreement :  <br />
+Agreement Processing : https://snipboard.io/ynaclm.jpg <br />
+Agreement Sucess : https://snipboard.io/NKdxq1.jpg <br />
+
+Payment : <br />
+Payment form : https://snipboard.io/JywKfG.jpg <br />
+Tokenized payment :  https://snipboard.io/1B48lw.jpg <br />
+Payment Success :  https://snipboard.io/pb8kgw.jpg <br />
+Duplicate Payment Valiation : https://snipboard.io/afFx0l.jpg <br />
+Redis payment status : https://snipboard.io/HKRJfn.jpg <br />
+
+Refund : <br />
+Refund Form: https://snipboard.io/mKbPJT.jpg <br />
+Reund Success : https://snipboard.io/rBs53D.jpg <br />
+
+Transactions : <br />
+Listing : https://snipboard.io/1OitCx.jpg with pagination <br />
+
+Pdf: <br />
+Docker- Gotenberge : https://snipboard.io/zayEKR.jpg <br />
+Download Pd : https://snipboard.io/rkd3Hb.jpg   with gotenberg <br />
+
+Number 01812345678 <br />
+PIN : 12121 <br />
+OTP : 123456 <br />
+
+Please use the below phone number .. sometimes other number not working reported online .<br />
+
+Number 01812345678 <br />
+PIN : 12121 <br />
+OTP : 123456 <br />
