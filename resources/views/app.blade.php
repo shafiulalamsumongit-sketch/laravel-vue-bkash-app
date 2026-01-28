@@ -14,8 +14,7 @@
         @endif
 </head>
 <body>
- 
-  <div className="fixed bottom-0 left-0 bg-red-500 w-screen h-12">
+<div className="fixed bottom-0 left-0 bg-red-500 w-screen h-12">
 <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
       <span class="text-sm text-body sm:text-center">© 2026 
         <a href="https://flowbite.com/" class="hover:underline">Agni</a>. 
@@ -32,9 +31,6 @@
     <footer class="p-4 bg-rose-300">
         Footer
     </footer>
-
 </div>
-
-
 </body>
 </html>

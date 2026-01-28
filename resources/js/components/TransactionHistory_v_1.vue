@@ -2,14 +2,11 @@
     <h1 class="text-left text-2xl font-bold m-8">{{ $t("Transaction") }}</h1>
     <hr class="my-4 h-px border-t-0 bg-gray-300 m-8">
     </hr>
-
+    
     <div class="relative overflow-x-auto bg-neutral-primary shadow-xs rounded-base border border-default m-8">
         <table class="w-full text-sm text-left rtl:text-right text-body">
             <thead class="text-sm text-body border-b border-default">
                 <tr>
-                    <th scope="col" class="px-6 py-3 bg-neutral-secondary-soft font-medium">
-                        <b>Serial</b>
-                    </th>
                     <th scope="col" class="px-6 py-3 bg-neutral-secondary-soft font-medium">
                         <b>Trx_iD</b>
                     </th>
@@ -25,42 +22,31 @@
                     <th scope="col" class="px-6 py-3 font-medium">
                         <b>Date</b>
                     </th>
-                    <th scope="col" class="px-4 py-2 text-center space-x-2">
-                        <b>Action</b>
-                    </th>
                 </tr>
             </thead>
             <tbody>
-                <TransactionRow v-for="(transaction, index) in transactions" :key="transaction.id" :item="transaction"
-                    :index="index" @edit="editBlog" @delete="deleteBlog">
-                    <template #default="{ item }">
-                        <th scope="row"
-                            class="px-6 py-4 font-medium text-heading whitespace-nowrap bg-neutral-secondary-soft">
-                            <b> {{ item.trx_iD }}</b>
-                        </th>
-                        <td class="px-6 py-4">
-                            {{ item.amount }}
-                        </td>
-                        <td class="px-6 py-4 bg-neutral-secondary-soft">
-                            {{ item.transaction_status }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ item.credited_amount }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ item.created_at }}
-                        </td>
-                    </template>
-                </TransactionRow>
-                <!-- Empty State -->
-                <tr v-if="!transactions.length">
-                    <td colspan="5" class="text-center py-6 text-gray-500">
-                        No blogs found
+                <tr class="border-b border-default" v-for="transaction in transactions" :key="transaction.id">
+                    <th scope="row"
+                        class="px-6 py-4 font-medium text-heading whitespace-nowrap bg-neutral-secondary-soft">
+                        <b> {{ transaction.trx_iD }}</b>
+                    </th>
+                    <td class="px-6 py-4">
+                        {{ transaction.amount }}
+                    </td>
+                    <td class="px-6 py-4 bg-neutral-secondary-soft">
+                        {{ transaction.transaction_status }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ transaction.credited_amount }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ transaction.created_at }}
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
+
 
     <div>
         <div class="flex flex-col">
@@ -116,7 +102,6 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import Pagination from "@/components/Pagination.vue";
-import TransactionRow from "@/components/TransactionRow.vue";
 
 const token = localStorage.getItem("token");
 const currentPage = ref(1);
@@ -124,16 +109,6 @@ const lastPage = ref(1);
 const transactions = ref([]);
 const pagination = ref({});
 const page = ref(1);
-
-const editBlog = (blog) => {
-    console.log('Edit blog:', blog)
-}
-
-const deleteBlog = (blog) => {
-    if (confirm(`Delete "${blog.title}"?`)) {
-        console.log('Delete blog:', blog)
-    }
-}
 
 const fetchTransactions = async () => {
     const res = await axios.get(
