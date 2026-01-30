@@ -1,13 +1,12 @@
 <template>
   <tr class="border-t hover:bg-gray-50 transition">
-    
     <!-- Serial -->
     <td class="px-4 py-2 w-12 text-center">
       {{ index + 1 }}
     </td>
 
     <!-- Dynamic columns -->
-    <slot :item="item" />
+    <slot :item="item" :index="index" :isActive="item.transaction_status === 'Completed'" />
 
     <!-- Actions -->
     <td class="px-4 py-2 text-center space-x-2">

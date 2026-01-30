@@ -3,6 +3,9 @@
     <hr class="my-4 h-px border-t-0 bg-gray-300 m-8">
     </hr>
 
+<p>
+source : https://chatgpt.com/c/69799b90-f878-8320-9cbc-96bf28c79d20
+</p>
     <div class="relative overflow-x-auto bg-neutral-primary shadow-xs rounded-base border border-default m-8">
         <table class="w-full text-sm text-left rtl:text-right text-body">
             <thead class="text-sm text-body border-b border-default">
@@ -33,7 +36,7 @@
             <tbody>
                 <TransactionRow v-for="(transaction, index) in transactions" :key="transaction.id" :item="transaction"
                     :index="index" @edit="editBlog" @delete="deleteBlog">
-                    <template #default="{ item }">
+                    <template #default="{  item, index, isActive }">
                         <th scope="row"
                             class="px-6 py-4 font-medium text-heading whitespace-nowrap bg-neutral-secondary-soft">
                             <b> {{ item.trx_iD }}</b>
@@ -41,11 +44,14 @@
                         <td class="px-6 py-4">
                             {{ item.amount }}
                         </td>
-                        <td class="px-6 py-4 bg-neutral-secondary-soft">
-                            {{ item.transaction_status }}
+                        <td v-if="isActive" class="px-6 py-4 bg-neutral-secondary-soft">
+                            {{ item.transaction_status }}✅
+                        </td>
+                        <td v-if="!isActive" class="px-6 py-4 bg-neutral-secondary-soft">
+                            {{ item.transaction_status }}✅
                         </td>
                         <td class="px-6 py-4">
-                            {{ item.credited_amount }}
+                            !isActive
                         </td>
                         <td class="px-6 py-4">
                             {{ item.created_at }}
@@ -189,6 +195,8 @@ const fetchTransac1tions1 = async (page = 1) => {
         });
 };
 
-fetchTransactions();
 
+onMounted(async () => {
+  fetchTransactions();
+})
 </script>
